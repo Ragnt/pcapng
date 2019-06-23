@@ -90,19 +90,21 @@ def test_Comment():
     s1  = 'Five Stars!'
     c1  = option.Comment(s1)
     c1u = option.Comment.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.Comment'
 
 def test_CustomStringCopyable():
     s1 = 'Mary had a little lamb'
     c1  = option.CustomStringCopyable( pen.BROCADE_PEN, s1 )
     c1u = option.CustomStringCopyable.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert c1.pen_val == c1u.pen_val == pen.BROCADE_PEN
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.CustomStringCopyable'
 
 def test_CustomBinaryCopyable():
-    s1 = 'Mary had a binary lamb'
+    s1 = b'Mary had a binary lamb'
     c1  = option.CustomBinaryCopyable( pen.BROCADE_PEN, s1 )
     c1u = option.CustomBinaryCopyable.unpack( c1.pack() )
     assert c1.content == c1u.content == s1
@@ -113,12 +115,13 @@ def test_CustomStringNonCopyable():
     s1 = 'Mary had a non-copyable little lamb'
     c1  = option.CustomStringNonCopyable( pen.BROCADE_PEN, s1 )
     c1u = option.CustomStringNonCopyable.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert c1.pen_val == c1u.pen_val == pen.BROCADE_PEN
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.CustomStringNonCopyable'
 
 def test_CustomBinaryNonCopyable():
-    s1 = 'Mary had a non-copyable binary lamb'
+    s1 = b'Mary had a non-copyable binary lamb'
     c1  = option.CustomBinaryNonCopyable( pen.BROCADE_PEN, s1 )
     c1u = option.CustomBinaryNonCopyable.unpack( c1.pack() )
     assert c1.content == c1u.content == s1
@@ -130,19 +133,22 @@ def test_ShbHardware():
     s1 = 'x86 water heater'
     c1  = option.ShbHardware(s1)
     c1u = option.ShbHardware.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.ShbHardware'
 def test_ShbOs():
     s1 = 'x86 water heater'
     c1  = option.ShbOs(s1)
     c1u = option.ShbOs.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.ShbOs'
 def test_ShbUserAppl():
     s1 = 'x86 water heater'
     c1  = option.ShbUserAppl(s1)
     c1u = option.ShbUserAppl.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.ShbUserAppl'
 
 #-----------------------------------------------------------------------------
@@ -150,14 +156,16 @@ def test_IdbName():
     s1 = 'ifc downlow'
     c1  = option.IdbName(s1)
     c1u = option.IdbName.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.IdbName'
 
 def test_IdbDescription():
     s1 = 'ifc supercool'
     c1  = option.IdbDescription(s1)
     c1u = option.IdbDescription.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.IdbDescription'
 
 def test_IdbIpv4Addr():
@@ -248,14 +256,16 @@ def test_IdbFilter():
     s1 = 'Natural Brown #4'
     c1  = option.IdbFilter(s1)
     c1u = option.IdbFilter.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.IdbFilter'
 
 def test_IdbOs():
     s1 = 'Ubuntu Xenial 16.04.1 LTS'
     c1  = option.IdbOs(s1)
     c1u = option.IdbOs.unpack( c1.pack() )
-    assert c1.content == c1u.content == s1
+    assert c1.content == c1u.content
+    assert str(c1u) == s1
     assert util.classname(c1) == util.classname(c1u) == 'pcapng.option.IdbOs'
 
 def test_IdbFcsLen():

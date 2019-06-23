@@ -148,8 +148,8 @@ def test_bytearray():
     with pytest.raises(AssertionError): util.assert_type_bytearray( 'abc' )
 
 def test_to_bytes():
-    assert 'abc' == to_bytes( 'abc' )
-    assert 'abc' == to_bytes( [97,98,99] )
+    assert b'abc' == to_bytes( 'abc' )
+    assert b'abc' == to_bytes( [97,98,99] )
     if util.is_python2():
         assert str( 'abc' ) == to_bytes( 'abc' )
     if util.is_python3():
@@ -211,11 +211,11 @@ def test_uint64_split32():
 def test_xxx():
     xx1 = struct.pack(   '!hhl', 1, 2, 3 )  # h='short', l='long'
     xx2 = struct.unpack( '!hhl', xx1 )      # ! => network byte order (big-endian)
-    assert xx1 == '\x00\x01\x00\x02\x00\x00\x00\x03'
+    assert xx1 == b'\x00\x01\x00\x02\x00\x00\x00\x03'
     assert xx2 == ( 1, 2, 3 )
-    assert '\x00\x00\x00\x00\x00\x00\x00\x05' == struct.pack( '!q', 5 )
-    assert '\x00\x00\x00\x05'                 == struct.pack( '!l', 5 )
-    assert '\x00\x05'                         == struct.pack( '!h', 5 )
+    assert b'\x00\x00\x00\x00\x00\x00\x00\x05' == struct.pack( '!q', 5 )
+    assert b'\x00\x00\x00\x05'                 == struct.pack( '!l', 5 )
+    assert b'\x00\x05'                         == struct.pack( '!h', 5 )
 
     assert 3 == len( [ 1, 2, 3] )
     assert (3, 140000) == util.split_float(3.14)
@@ -241,10 +241,10 @@ def test_time():
     util.test_time_utc_unset()
 
 def test_quot():
-    assert [0,0,0, 1,1,1, 2,2,2] == map( lambda x:util.quot(x,3), range(9) )
+    assert [0,0,0, 1,1,1, 2,2,2] == list(map( lambda x:util.quot(x,3), range(9) ))
 
 def test_mod():
-    assert [0,1,2, 0,1,2, 0,1,2] == map( lambda x:util.mod(x,3), range(9) )
+    assert [0,1,2, 0,1,2, 0,1,2] == list(map( lambda x:util.mod(x,3), range(9) ))
 
 def test_take():
     def generate_ints(N):

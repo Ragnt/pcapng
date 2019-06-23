@@ -22,10 +22,6 @@ import pcapng.util
 #todo think about how to handle a block of packets
 #todo look at "docopt" usage -> cmdopts processing
 
-#-----------------------------------------------------------------------------
-pcapng.util.assert_python2()    #todo make work for python 2.7 or 3.3 ?
-#-----------------------------------------------------------------------------
-
 # IANA type codes; MRT types  ("_ET" suffix => Extended Timestamp field is present)
 NULL                        =   0       # deprecated
 START                       =   1       # deprecated

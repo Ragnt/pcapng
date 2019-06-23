@@ -37,10 +37,6 @@ from   pcapng.util              import to_bytes
 #todo add docstrings for all constructurs
 #todo add docstrings for all methods
 
-#-----------------------------------------------------------------------------
-util.assert_python2()    #todo make work for python 2.7 or 3.3 ?
-#-----------------------------------------------------------------------------
-
 BYTE_ORDER_MAGIC    = 0x1A2B3C4D
 
 CUSTOM_MRT_ISIS_BLOCK_OPT = option.CustomStringCopyable( pcapng.pen.BROCADE_PEN, 'EMBEDDED_MRT_ISIS_BLOCK')
@@ -572,7 +568,7 @@ def unpack_dispatch( packed_bytes ):
 def pack_all( blk_lst ):
     "Given a list of PCAPNG blocks, converts all to packed bytes and concatenates the result"
     util.assert_type_list(blk_lst)
-    cum_result = ''
+    cum_result = b''
     for blk in blk_lst:
         cum_result += blk.pack()
     return cum_result

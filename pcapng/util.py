@@ -56,10 +56,6 @@ def is_python3():
     (major, minor, micro, release_level, serial) = sys.version_info
     return ((major == 3) and (minor >= 5))
 
-def assert_python2():
-    "Assert running in Python 2, version 2.7 or later"
-    assert is_python2()
-
 #-----------------------------------------------------------------------------
 #todo need tests for all
 
@@ -165,7 +161,7 @@ def fibonacci_range(limit):   #todo need test
 def fibonacci_range_signed(limit):   #todo need test
     "Returns a symmetric list of pos/neg Fibonacci numbers with abs(val) less than to limit"
     pos_vals = fibonacci_range(limit)
-    neg_vals = map( (lambda x: -x), fibonacci_range(limit) )
+    neg_vals = list(map( (lambda x: -x), fibonacci_range(limit) ))
     result = sorted( (pos_vals + neg_vals), key=(lambda x: abs(x)))
     return result
 
@@ -188,18 +184,31 @@ def assert_rel_equal( x, y, digits=None ):
 
 def to_bytes( arg ):
     """Converts arg to a 'bytes' object."""
-    return bytes( bytearray( arg ))    # if python2, 'bytes' is synonym for 'str'
+    if type(arg) is bytes:
+        return arg
+    elif type(arg) is list:
+        return bytes(bytearray(arg))
+    elif type(arg) is str:
+        return arg.encode("utf-8")
+    else:
+        return bytearray(arg)
 
 def str_to_bytes( arg ):
     """Converts a string arg to a 'bytes' object."""
     assert_type_str( arg )
     """Convert an ASCII string to 'bytes'. Works on both Python2 and Python3."""
-    return to_bytes( map(ord,arg))
+    if is_python2():
+        return to_bytes( map(ord,arg))
+    else:
+        return arg.encode("utf-8")
 
 def bytes_to_uint8_list( arg ):  #todo need test
     """Converts a 'bytes' arg to a list of uint8"""
     assert_type_bytes( arg )
-    return list( map(ord,arg))
+    if is_python2():
+        return list( map(ord,arg) )
+    else:
+        return list( arg )
 
 def int32_to_hexstr(arg):
     """Converts a 32-bit unsigned integer value to a hex string ."""

@@ -27,10 +27,6 @@ import pcapng.pen   as pen
 import pcapng.util  as util
 from   pcapng.util  import to_bytes
 
-#-----------------------------------------------------------------------------
-util.assert_python2()    #todo make work for python 2.7 or 3.3 ?
-#-----------------------------------------------------------------------------
-
 #todo add docstrings for all classes
 #todo add docstrings for all constructurs
 #todo add docstrings for all methods
@@ -97,6 +93,13 @@ class Option:
         content = content_pad[:content_len]
         return Option( type_code, content )
 
+class StrOption:
+    def __str__(self):
+        if util.is_python2():
+            return self.content
+        else:
+            return self.content.decode("utf-8")
+
 class EndOfOptions(Option):
     "Degenerate class used as a sentinal value for Option packed bytes"
     # from PCAPNG spec
@@ -108,7 +111,7 @@ class EndOfOptions(Option):
         return opt_bytes == EndOfOptions.PACKED_BYTES
 
 #wip continue here
-class Comment(Option):
+class Comment(Option, StrOption):
     "Serialize & deserialze a PCAPNG Comment Option"
     SPEC_CODE = 1
     def __init__(self, content_str):
@@ -143,7 +146,7 @@ class CustomOption(Option):
     def __eq__(self, other):    return self.to_map() == other.to_map()
     def __ne__(self, other):    return (not __eq__(self,other))
 
-class CustomStringCopyable(CustomOption):
+class CustomStringCopyable(CustomOption, StrOption):
     "Serialize & deserialze a PCAPNG Custom String Copyable Option"
     SPEC_CODE = 2988
     def __init__(self, pen_val, content):
@@ -205,7 +208,7 @@ class CustomBinaryCopyable(CustomOption):
         content         = content_pad[:content_len]
         return CustomBinaryCopyable( pen_val, content )
 
-class CustomStringNonCopyable(CustomOption):
+class CustomStringNonCopyable(CustomOption, StrOption):
     "Serialize & deserialze a PCAPNG Custom String Non-Copyable Option"
     SPEC_CODE = 19372
     def __init__(self, pen_val, content):
@@ -272,7 +275,7 @@ class ShbOption(Option):
         "Create an instance"
         Option.__init__(self, type_code, content)
 
-class ShbHardware(ShbOption):
+class ShbHardware(ShbOption, StrOption):
     "Serialize & deserialze a PCAPNG SHB Hardware Option"
     SPEC_CODE = 2
     def __init__(self, content_str):
@@ -290,7 +293,7 @@ class ShbHardware(ShbOption):
         content = content_pad[:content_len]
         return ShbHardware(content)
 
-class ShbOs(ShbOption):
+class ShbOs(ShbOption, StrOption):
     "Serialize & deserialze a PCAPNG SHB OS Option"
     SPEC_CODE = 3
     def __init__(self, content_str):
@@ -308,7 +311,7 @@ class ShbOs(ShbOption):
         content = content_pad[:content_len]
         return ShbOs(content)
 
-class ShbUserAppl(ShbOption):
+class ShbUserAppl(ShbOption, StrOption):
     "Serialize & deserialze a PCAPNG SHB User Application Option"
     SPEC_CODE = 4
     def __init__(self, content_str):
@@ -333,7 +336,7 @@ class IdbOption(Option):
         "Create an instance"
         Option.__init__(self, type_code, content)
 
-class IdbName(IdbOption):
+class IdbName(IdbOption, StrOption):
     "Serialize & deserialze a PCAPNG IDB Name Option"
     SPEC_CODE = 2
     def __init__(self, content_str):
@@ -351,7 +354,7 @@ class IdbName(IdbOption):
         content = content_pad[:content_len]
         return IdbName(content)
 
-class IdbDescription(IdbOption):
+class IdbDescription(IdbOption, StrOption):
     "Serialize & deserialze a PCAPNG IDB Description Option"
     SPEC_CODE = 3
     def __init__(self, content_str):
@@ -654,7 +657,7 @@ class IdbTZone(IdbOption):
         result = IdbTZone( offset )
         return result
 
-class IdbFilter(IdbOption):   #todo spec says "TODO: Appendix XXX"
+class IdbFilter(IdbOption, StrOption):   #todo spec says "TODO: Appendix XXX"
     "Serialize & deserialze a PCAPNG IDB Filter Resolution Option"
     SPEC_CODE = 11
     def __init__(self, content_str):
@@ -671,7 +674,7 @@ class IdbFilter(IdbOption):   #todo spec says "TODO: Appendix XXX"
         assert type_code == IdbFilter.SPEC_CODE    #todo check everywhere
         return IdbFilter(content)
 
-class IdbOs(IdbOption):
+class IdbOs(IdbOption, StrOption):
     "Serialize & deserialze a PCAPNG IDB OS Option"
     SPEC_CODE = 12
     def __init__(self, content_str):
@@ -846,7 +849,7 @@ def pack_all(opts_lst):  #todo needs test
     #todo verify all fields
     """Given a list of options, converts each into packed bytes and concatenates the result"""
     util.assert_type_list(opts_lst)
-    cum_result = ''
+    cum_result = b''
     for opt in opts_lst:
         cum_result += opt.pack()
     cum_result += EndOfOptions.PACKED_BYTES

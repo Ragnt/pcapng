@@ -65,7 +65,7 @@ def test_simple_pkt_block():
     spb_bytes = spb_obj.pack()     #todo fix this (no var)!
     spb_obj_unpacked  = block.SimplePacketBlock.unpack( spb_bytes )
     assert spb_obj_unpacked             == spb_obj
-    assert spb_obj_unpacked.pkt_data    == 'abc'
+    assert spb_obj_unpacked.pkt_data    == b'abc'
 
 def test_enhanced_pkt_block():
     def assert_epb_codec( interface_id, pkt_data, pkt_data_orig_len=None, options_lst=[] ):
@@ -160,7 +160,7 @@ def test_blocks_lst():
                                     option.IdbOs( 'Ubuntu Xenial 16.04.1 LTS' ) ] ),
         block.SimplePacketBlock('abc'),
         block.EnhancedPacketBlock( 0, "<<<Stand-in for actual packet data>>>"  ),
-        block.CustomBlockCopyable( pen.BROCADE_PEN, 'User-defined custom data' ),
+        block.CustomBlockCopyable( pen.BROCADE_PEN, b'User-defined custom data' ),
     ]
     packed_bytes = block.pack_all( blk_lst )
 
